@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">KeepHere</string>
+    <string name="understood">Understood</string>
+    <string name="suspectMessage">"This item is not registered earlier. Please contact your manager for assistance. "</string>
+</resources>
