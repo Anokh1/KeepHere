@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "30536593328",
+    "firebase_url": "https://keephere-6cccd-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "keephere-6cccd",
+    "storage_bucket": "keephere-6cccd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:30536593328:android:17b759a265b188820ff075",
+        "android_client_info": {
+          "package_name": "com.example.keephere"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "30536593328-henkjh9puklhme22bb8icgov66vkhki8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-fVvLzzDoZ3yiEeR6OZeTUmHseMsdzeQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "30536593328-henkjh9puklhme22bb8icgov66vkhki8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
