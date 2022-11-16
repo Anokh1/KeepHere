@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fitting_room_background_2"
-    tools:context=".FittingRoom1">
+    tools:context=".FittingRoom3">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
         android:text="Fitting Room 3 "
         android:textSize="30sp"
-        android:textStyle="bold"
-        android:layout_margin="12dp"/>
+        android:textStyle="bold" />
 
     <GridLayout
         android:layout_width="match_parent"
@@ -51,9 +55,18 @@
                     android:src="@drawable/ic_item1"/>
 
                 <TextView
+                    android:id="@+id/item1Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Item 1"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/item1Barcode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NA"
                     android:textSize="16sp"
                     android:textColor="@color/black"/>
             </LinearLayout>
@@ -86,9 +99,18 @@
                     android:src="@drawable/ic_item2"/>
 
                 <TextView
+                    android:id="@+id/item2Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Item 2"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/item2Barcode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NA"
                     android:textSize="16sp"
                     android:textColor="@color/black"/>
             </LinearLayout>
@@ -121,9 +143,18 @@
                     android:src="@drawable/ic_item3"/>
 
                 <TextView
+                    android:id="@+id/item3Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Item 3"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/item3Barcode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NA"
                     android:textSize="16sp"
                     android:textColor="@color/black"/>
             </LinearLayout>
@@ -156,9 +187,18 @@
                     android:src="@drawable/ic_item4"/>
 
                 <TextView
+                    android:id="@+id/item4Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Item 4"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/item4Barcode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NA"
                     android:textSize="16sp"
                     android:textColor="@color/black"/>
             </LinearLayout>
@@ -191,9 +231,18 @@
                     android:src="@drawable/ic_item5"/>
 
                 <TextView
+                    android:id="@+id/item5Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Item 5"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/item5Barcode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NA"
                     android:textSize="16sp"
                     android:textColor="@color/black"/>
             </LinearLayout>
@@ -226,9 +275,18 @@
                     android:src="@drawable/ic_item6"/>
 
                 <TextView
+                    android:id="@+id/item6Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Item 6"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/item6Barcode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NA"
                     android:textSize="16sp"
                     android:textColor="@color/black"/>
             </LinearLayout>
@@ -238,15 +296,32 @@
     </GridLayout>
 
     <Button
-        android:id="@+id/btnReport"
+        android:id="@+id/btnCheckout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="19dp"
-        android:text="Report"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="30dp"
         android:background="@color/teal_700"
+        android:text="Checkout"
+        android:textSize="13dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/btnClear"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="150dp"
+        android:background="@color/teal_700"
+        android:text="Clear"
+        android:textSize="13dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

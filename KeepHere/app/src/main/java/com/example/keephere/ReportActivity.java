@@ -30,7 +30,7 @@ public class ReportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_report);
 
         recyclerView = findViewById(R.id.reportList);
-        database = FirebaseDatabase.getInstance().getReference("Report"); // need to create Reports path to store report
+        database = FirebaseDatabase.getInstance().getReference("Report"); // need to create Report path to store report
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
