@@ -45,12 +45,6 @@ public class LoginRegisterActivity extends AppCompatActivity {
         userName = findViewById(R.id.userName);
 
         fittingRoom1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            // show toast
-//            public void onClick(View view) {
-//                showToast("Fitting Room 1 Clicked");
-//            }
-            // from MultiplePages
             public void onClick(View view) {
                 Intent intent = new Intent(LoginRegisterActivity.this, FittingRoom1.class);
                 startActivity(intent);
@@ -120,15 +114,11 @@ public class LoginRegisterActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
-        // What is this for?
-        //userName.setText(user.getEmail()); // if i put this here got NullPointerException error
 
         if (user == null){
             startActivity(new Intent(LoginRegisterActivity.this, LoginActivity.class));
         } else{
-            userName.setText(user.getEmail());
+            userName.setText(user.getEmail());  // to display user email in the Home screen
         }
-
-        //userName.setText(user.getEmail());
     }
 }

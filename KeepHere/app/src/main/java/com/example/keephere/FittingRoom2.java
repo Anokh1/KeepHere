@@ -57,6 +57,10 @@ public class FittingRoom2 extends AppCompatActivity {
 
     TextView item1Barcode;
     TextView item2Barcode;
+    TextView item3Barcode;
+    TextView item4Barcode;
+    TextView item5Barcode;
+    TextView item6Barcode;
 
     Button btnCheckout;
     Button btnClear;
@@ -72,13 +76,13 @@ public class FittingRoom2 extends AppCompatActivity {
     SharedPreferences sharedPreferences;
 
     // Creating a shared preference name and key name
-    private static final String SHARED_PREF_NAME = "mypref";
-    private static final String KEY_ITEM1 = "itemNumber1";
-    private static final String KEY_ITEM2 = "itemNumber2";
-    private static final String KEY_ITEM3 = "itemNumber3";
-    private static final String KEY_ITEM4 = "itemNumber4";
-    private static final String KEY_ITEM5 = "itemNumber5";
-    private static final String KEY_ITEM6 = "itemNumber6";
+    private static final String SHARED_PREF_NAME2 = "mypref2";
+    private static final String KEY_ITEM7 = "itemNumber1";
+    private static final String KEY_ITEM8 = "itemNumber2";
+    private static final String KEY_ITEM9 = "itemNumber3";
+    private static final String KEY_ITEM10 = "itemNumber4";
+    private static final String KEY_ITEM11 = "itemNumber5";
+    private static final String KEY_ITEM12 = "itemNumber6";
 
 
     // Creating a variable for the object class
@@ -103,27 +107,36 @@ public class FittingRoom2 extends AppCompatActivity {
 
         item1Barcode = findViewById(R.id.item1Barcode);
         item2Barcode = findViewById(R.id.item2Barcode);
+        item3Barcode = findViewById(R.id.item3Barcode);
+        item4Barcode = findViewById(R.id.item4Barcode);
+        item5Barcode = findViewById(R.id.item5Barcode);
+        item6Barcode = findViewById(R.id.item6Barcode);
 
         // Used to get the instance of the Firebase Database
         firebaseDatabase = FirebaseDatabase.getInstance();
 
         // Used to get the reference for the database
         databaseReference = firebaseDatabase.getReference("KeepHere2");
-        //databaseReference = firebaseDatabase.getReference("Report");
 
-        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME2, MODE_PRIVATE);
 
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.apply();
-
-        String itemNum1 = sharedPreferences.getString(KEY_ITEM1, "NA");
-        //itemNumber1.setText(itemNum1);
+        String itemNum1 = sharedPreferences.getString(KEY_ITEM7, "NA");
         item1Barcode.setText(itemNum1);
 
-        String itemNum2 = sharedPreferences.getString(KEY_ITEM2, "NA");
+        String itemNum2 = sharedPreferences.getString(KEY_ITEM8, "NA");
         item2Barcode.setText(itemNum2);
 
+        String itemNum3 = sharedPreferences.getString(KEY_ITEM9, "NA");
+        item3Barcode.setText(itemNum3);
 
+        String itemNum4 = sharedPreferences.getString(KEY_ITEM10, "NA");
+        item4Barcode.setText(itemNum4);
+
+        String itemNum5 = sharedPreferences.getString(KEY_ITEM11, "NA");
+        item5Barcode.setText(itemNum5);
+
+        String itemNum6 = sharedPreferences.getString(KEY_ITEM12, "NA");
+        item6Barcode.setText(itemNum6);
 
         fittingRoom2 = new KeepHere2();
         report = new Report();
@@ -136,17 +149,14 @@ public class FittingRoom2 extends AppCompatActivity {
             String date = dateCurrent.toString();
 
             saveSuspected(fittingRoomNumber, date);
-
-            //scanCheckoutCode();
         });
 
         btnClear = findViewById(R.id.btnClear);
         btnClear.setOnClickListener(v ->{
             clearFittingRoom();
-            //startActivity(new Intent(FittingRoom2.this, FittingRoom2.class ));
-
         });
 
+// 123456
         item1 = findViewById(R.id.item1);
         item1.setOnClickListener(v -> {
             String fittingRoomNumber = frNumber.getText().toString();
@@ -215,6 +225,7 @@ public class FittingRoom2 extends AppCompatActivity {
 
     }
 
+    // Checkin
     private void scanCode() {
         ScanOptions options = new ScanOptions();
         options.setPrompt("Volume up to flash on");
@@ -252,42 +263,40 @@ public class FittingRoom2 extends AppCompatActivity {
 
                                 if(!Objects.equals(currentItemNumber, barcodeNumber)){
                                     if(Objects.equals(currentItemNumber, "Item 1")){
-                                        //String originalItemNumber = fittingRoom2.getItemNumber();
-                                        //String originalItemNumber1 = "Item 1";
-                                        //itemNumber1.setText(barcodeNumber);
                                         item1Barcode.setText(barcodeNumber);
-//                                        fittingRoom2.setItemNumber(originalItemNumber);
-                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                                        editor.putString(KEY_ITEM1, barcodeNumber);
-                                        editor.apply();
-                                        //fittingRoom2.setItemNumber(originalItemNumber1);
-
+                                        SharedPreferences.Editor editor7 = sharedPreferences.edit();
+                                        editor7.putString(KEY_ITEM7, barcodeNumber);
+                                        editor7.apply();
                                     }
                                     if(Objects.equals(currentItemNumber, "Item 2")){
                                         item2Barcode.setText(barcodeNumber);
-                                        SharedPreferences.Editor editor1 = sharedPreferences.edit();
-                                        editor1.putString(KEY_ITEM2, barcodeNumber);
-                                        editor1.apply();
+                                        SharedPreferences.Editor editor8 = sharedPreferences.edit();
+                                        editor8.putString(KEY_ITEM8, barcodeNumber);
+                                        editor8.apply();
                                     }
                                     if(Objects.equals(currentItemNumber, "Item 3")){
-                                        String originalItemNumber = fittingRoom2.getItemNumber();
-                                        itemNumber3.setText(barcodeNumber);
-                                        fittingRoom2.setItemNumber(originalItemNumber);
+                                        item3Barcode.setText(barcodeNumber);
+                                        SharedPreferences.Editor editor9 = sharedPreferences.edit();
+                                        editor9.putString(KEY_ITEM9, barcodeNumber);
+                                        editor9.apply();
                                     }
                                     if(Objects.equals(currentItemNumber, "Item 4")){
-                                        String originalItemNumber = fittingRoom2.getItemNumber();
-                                        itemNumber4.setText(barcodeNumber);
-                                        fittingRoom2.setItemNumber(originalItemNumber);
+                                        item4Barcode.setText(barcodeNumber);
+                                        SharedPreferences.Editor editor10 = sharedPreferences.edit();
+                                        editor10.putString(KEY_ITEM10, barcodeNumber);
+                                        editor10.apply();
                                     }
                                     if(Objects.equals(currentItemNumber, "Item 5")){
-                                        String originalItemNumber = fittingRoom2.getItemNumber();
-                                        itemNumber5.setText(barcodeNumber);
-                                        fittingRoom2.setItemNumber(originalItemNumber);
+                                        item5Barcode.setText(barcodeNumber);
+                                        SharedPreferences.Editor editor11 = sharedPreferences.edit();
+                                        editor11.putString(KEY_ITEM11, barcodeNumber);
+                                        editor11.apply();
                                     }
                                     if(Objects.equals(currentItemNumber, "Item 6")){
-                                        String originalItemNumber = fittingRoom2.getItemNumber();
-                                        itemNumber6.setText(barcodeNumber);
-                                        fittingRoom2.setItemNumber(originalItemNumber);
+                                        item6Barcode.setText(barcodeNumber);
+                                        SharedPreferences.Editor editor12 = sharedPreferences.edit();
+                                        editor12.putString(KEY_ITEM12, barcodeNumber);
+                                        editor12.apply();
                                     }
                                 }
 
@@ -295,7 +304,6 @@ public class FittingRoom2 extends AppCompatActivity {
 
                                 // Toast message
                                 Toast.makeText(FittingRoom2.this, "Item saved", Toast.LENGTH_SHORT).show();
-
 
                             }
                         }
@@ -311,7 +319,7 @@ public class FittingRoom2 extends AppCompatActivity {
     });
 
     private void openScanner(String fittingRoomNumber, String itemNumber, String date){
-        scanCode();                                        // open the scanner
+        scanCode();                                            // open the scanner
         fittingRoom2.setFittingRoomNumber(fittingRoomNumber);  // to store fitting room number
         fittingRoom2.setItemNumber(itemNumber);                // to store item number
         fittingRoom2.setDate(date);
@@ -322,8 +330,6 @@ public class FittingRoom2 extends AppCompatActivity {
 
     private void storeBarcode(String barcodeNumber){
         fittingRoom2.setBarcodeNumber(barcodeNumber);           // to store barcode number
-
-
     }
 
     // Checkout
@@ -359,15 +365,60 @@ public class FittingRoom2 extends AppCompatActivity {
                                 String currentItemNumber = fittingRoom2.getItemNumber();
 
                                 if(Objects.equals(currentItemNumber, "Item 1")){
-                                    //String originalItemNumber = fittingRoom2.getItemNumber();
-                                    //String originalItemNumber1 = "Item 1";
-                                    //itemNumber1.setText(barcodeNumber);
                                     item1Barcode.setText("NA");
-//                                        fittingRoom2.setItemNumber(originalItemNumber);
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                                    editor.putString(KEY_ITEM1, "NA");
-                                    editor.apply();
-                                    //fittingRoom2.setItemNumber(originalItemNumber1);
+                                    SharedPreferences.Editor editor7 = sharedPreferences.edit();
+                                    editor7.putString(KEY_ITEM7, "NA");
+                                    editor7.apply();
+
+                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
+                                        barcodeSnapshot.getRef().removeValue();
+                                    }
+                                }
+                                if(Objects.equals(currentItemNumber, "Item 2")){
+                                    item2Barcode.setText("NA");
+                                    SharedPreferences.Editor editor8 = sharedPreferences.edit();
+                                    editor8.putString(KEY_ITEM8, "NA");
+                                    editor8.apply();
+
+                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
+                                        barcodeSnapshot.getRef().removeValue();
+                                    }
+                                }
+                                if(Objects.equals(currentItemNumber, "Item 3")){
+                                    item3Barcode.setText("NA");
+                                    SharedPreferences.Editor editor9 = sharedPreferences.edit();
+                                    editor9.putString(KEY_ITEM9, "NA");
+                                    editor9.apply();
+
+                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
+                                        barcodeSnapshot.getRef().removeValue();
+                                    }
+                                }
+                                if(Objects.equals(currentItemNumber, "Item 4")){
+                                    item4Barcode.setText("NA");
+                                    SharedPreferences.Editor editor10 = sharedPreferences.edit();
+                                    editor10.putString(KEY_ITEM10, "NA");
+                                    editor10.apply();
+
+                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
+                                        barcodeSnapshot.getRef().removeValue();
+                                    }
+                                }
+                                if(Objects.equals(currentItemNumber, "Item 5")){
+                                    item5Barcode.setText("NA");
+                                    SharedPreferences.Editor editor11 = sharedPreferences.edit();
+                                    editor11.putString(KEY_ITEM11, "NA");
+                                    editor11.apply();
+
+                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
+                                        barcodeSnapshot.getRef().removeValue();
+                                    }
+                                }
+                                if(Objects.equals(currentItemNumber, "Item 6")){
+                                    item6Barcode.setText("NA");
+                                    SharedPreferences.Editor editor12 = sharedPreferences.edit();
+                                    editor12.putString(KEY_ITEM12, "NA");
+                                    editor12.apply();
 
                                     for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
                                         barcodeSnapshot.getRef().removeValue();
@@ -382,7 +433,6 @@ public class FittingRoom2 extends AppCompatActivity {
                                 databaseReference.push().setValue(report);
 
                                 showPopupWindow();
-
                             }
                         }
 
@@ -393,18 +443,13 @@ public class FittingRoom2 extends AppCompatActivity {
                     });
                 }
             }).show();
-
-
         }
     });
 
     private void saveSuspected(String fittingRoomNumber, String date){
         scanCheckoutCode();                                        // open the scanner
-        report.setFittingRoom(fittingRoomNumber);  // to store fitting room number
+        report.setFittingRoom(fittingRoomNumber);                  // to store fitting room number
         report.setDate(date);
-
-        //FirebaseUser user = mAuth.getInstance().getCurrentUser();
-        //report.setUserEmail(user.getEmail());
     }
 
     private void showPopupWindow(){
@@ -418,8 +463,6 @@ public class FittingRoom2 extends AppCompatActivity {
         PopupWindow popupWindow = new PopupWindow(view, width, height, false);
 
         popupWindow.showAtLocation(parent, Gravity.CENTER, 0, 0);
-
-//        body.setText(R.string.suspectMessage);
 
         close.setOnClickListener(v -> {
             popupWindow.dismiss();
@@ -437,10 +480,18 @@ public class FittingRoom2 extends AppCompatActivity {
 
         item1Barcode.setText("NA");
         item2Barcode.setText("NA");
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(KEY_ITEM1, "NA");
-        editor.putString(KEY_ITEM2, "NA");
-        editor.apply();
-    }
+        item3Barcode.setText("NA");
+        item4Barcode.setText("NA");
+        item5Barcode.setText("NA");
+        item6Barcode.setText("NA");
 
+        SharedPreferences.Editor editor7 = sharedPreferences.edit();
+        editor7.putString(KEY_ITEM7, "NA");
+        editor7.putString(KEY_ITEM8, "NA");
+        editor7.putString(KEY_ITEM9, "NA");
+        editor7.putString(KEY_ITEM10, "NA");
+        editor7.putString(KEY_ITEM11, "NA");
+        editor7.putString(KEY_ITEM12, "NA");
+        editor7.apply();
+    }
 }

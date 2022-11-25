@@ -481,6 +481,11 @@ public class FittingRoom3 extends AppCompatActivity {
 
         item1Barcode.setText("NA");
         item2Barcode.setText("NA");
+        item3Barcode.setText("NA");
+        item4Barcode.setText("NA");
+        item5Barcode.setText("NA");
+        item6Barcode.setText("NA");
+
         SharedPreferences.Editor editor13 = sharedPreferences.edit();
         editor13.putString(KEY_ITEM13, "NA");
         editor13.putString(KEY_ITEM14, "NA");
@@ -490,6 +495,4 @@ public class FittingRoom3 extends AppCompatActivity {
         editor13.putString(KEY_ITEM18, "NA");
         editor13.apply();
     }
-
-
 }

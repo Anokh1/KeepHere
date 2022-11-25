@@ -17,8 +17,6 @@ import java.util.ArrayList;
 
 public class ReportActivity extends AppCompatActivity {
 
-    // minute 11:39
-
     RecyclerView recyclerView;
     DatabaseReference database;
     MyAdapter myAdapter;
