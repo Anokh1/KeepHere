@@ -1,10 +1,17 @@
 package com.example.keephere;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,9 +37,12 @@ import com.journeyapps.barcodescanner.ScanOptions;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 
 public class FittingRoom1 extends AppCompatActivity {
+
+    RelativeLayout parent;
 
     CardView item1;
     CardView item2;
@@ -49,7 +59,15 @@ public class FittingRoom1 extends AppCompatActivity {
     TextView itemNumber5;
     TextView itemNumber6;
 
+    TextView item1Barcode;
+    TextView item2Barcode;
+    TextView item3Barcode;
+    TextView item4Barcode;
+    TextView item5Barcode;
+    TextView item6Barcode;
+
     Button btnCheckout;
+    Button btnClear;
 
     FirebaseAuth mAuth;
 
@@ -59,13 +77,27 @@ public class FittingRoom1 extends AppCompatActivity {
     // Creating a variable for the Database Reference for Firebase
     DatabaseReference databaseReference;
 
+    SharedPreferences sharedPreferences;
+
+    // Creating a shared preference name and key name
+    private static final String SHARED_PREF_NAME1 = "mypref1";
+    private static final String KEY_ITEM1 = "itemNumber1";
+    private static final String KEY_ITEM2 = "itemNumber2";
+    private static final String KEY_ITEM3 = "itemNumber3";
+    private static final String KEY_ITEM4 = "itemNumber4";
+    private static final String KEY_ITEM5 = "itemNumber5";
+    private static final String KEY_ITEM6 = "itemNumber6";
+
     // Creating a variable for the object class
-    KeepHere keepHere;
+    KeepHere fittingRoom1;
+    Report report;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fitting_room_1);
+
+        parent = findViewById(R.id.parent_layout);
 
         frNumber = findViewById(R.id.textView);
 
@@ -76,43 +108,67 @@ public class FittingRoom1 extends AppCompatActivity {
         itemNumber5 = findViewById(R.id.item5Text);
         itemNumber6 = findViewById(R.id.item6Text);
 
+        item1Barcode = findViewById(R.id.item1Barcode);
+        item2Barcode = findViewById(R.id.item2Barcode);
+        item3Barcode = findViewById(R.id.item3Barcode);
+        item4Barcode = findViewById(R.id.item4Barcode);
+        item5Barcode = findViewById(R.id.item5Barcode);
+        item6Barcode = findViewById(R.id.item6Barcode);
+
         // Used to get the instance of the Firebase Database
         firebaseDatabase = FirebaseDatabase.getInstance();
 
         // Used to get the reference for the database
         databaseReference = firebaseDatabase.getReference("KeepHere");
 
-        keepHere = new KeepHere();
+        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME1, MODE_PRIVATE);
+
+        String itemNum1 = sharedPreferences.getString(KEY_ITEM1, "NA");
+        item1Barcode.setText(itemNum1);
+
+        String itemNum2 = sharedPreferences.getString(KEY_ITEM2, "NA");
+        item2Barcode.setText(itemNum2);
+
+        String itemNum3 = sharedPreferences.getString(KEY_ITEM3, "NA");
+        item3Barcode.setText(itemNum3);
+
+        String itemNum4 = sharedPreferences.getString(KEY_ITEM4, "NA");
+        item4Barcode.setText(itemNum4);
+
+        String itemNum5 = sharedPreferences.getString(KEY_ITEM5, "NA");
+        item5Barcode.setText(itemNum5);
+
+        String itemNum6 = sharedPreferences.getString(KEY_ITEM6, "NA");
+        item6Barcode.setText(itemNum6);
+
+        fittingRoom1 = new KeepHere();
+        report = new Report();
 
         btnCheckout = findViewById(R.id.btnCheckout);
         btnCheckout.setOnClickListener(v ->{
-            scanCheckoutCode();
+            String fittingRoomNumber = frNumber.getText().toString();
+
+            Date dateCurrent = Calendar.getInstance().getTime();
+            String date = dateCurrent.toString();
+
+            saveSuspected(fittingRoomNumber, date);
         });
 
+        btnClear = findViewById(R.id.btnClear);
+        btnClear.setOnClickListener(v ->{
+            clearFittingRoom();
+        });
 
+// 123456
         item1 = findViewById(R.id.item1);
-//        item1.setOnClickListener(v -> {
-//            scanCode();
-//            String fittingRoomNumber = frNumber.getText().toString();
-//            String itemNumber = itemNumber1.getText().toString();
-//
-//            addDataToFirebase(fittingRoomNumber, itemNumber);
-//        });
+        item1.setOnClickListener(v -> {
+            String fittingRoomNumber = frNumber.getText().toString();
+            String itemNumber = itemNumber1.getText().toString();
 
-        item1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String fittingRoomNumber = frNumber.getText().toString(); // get the Fitting Room Number from activity_fitting_room_1.xml
-                String itemNumber = itemNumber1.getText().toString();     // get the Item Number from activity_fitting_room_1.xml
+            Date dateCurrent = Calendar.getInstance().getTime();
+            String date = dateCurrent.toString();
 
-                Date dateCurrent = Calendar.getInstance().getTime();
-                String date = dateCurrent.toString();
-
-                openScanner(fittingRoomNumber, itemNumber, date);         // to open the scanner and send data to Firebase
-
-
-
-            }
+            openScanner(fittingRoomNumber, itemNumber, date);
         });
 
         item2 = findViewById(R.id.item2);
@@ -124,8 +180,6 @@ public class FittingRoom1 extends AppCompatActivity {
             String date = dateCurrent.toString();
 
             openScanner(fittingRoomNumber, itemNumber, date);
-
-
         });
 
         item3 = findViewById(R.id.item3);
@@ -174,58 +228,26 @@ public class FittingRoom1 extends AppCompatActivity {
 
     }
 
+    // Checkin
     private void scanCode() {
         ScanOptions options = new ScanOptions();
         options.setPrompt("Volume up to flash on");
         options.setBeepEnabled(true);
         options.setOrientationLocked(true);
         options.setCaptureActivity(CaptureAct.class); // from CaptureAct.java
-
-//        FirebaseUser user = mAuth.getInstance().getCurrentUser();
-//        String email = user.getEmail();
-//
-//        DatabaseReference emailReference = FirebaseDatabase.getInstance().getReference("KeepHere");
-//        Query checkEmail = emailReference.orderByChild("userEmail").equalTo(email);
-//
-//        checkEmail.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if(snapshot.exists()){
-//                    // Toast message
-//                    //Toast.makeText(FittingRoom1.this, "Item exists", Toast.LENGTH_SHORT).show();
-//
-//                } else {
-//                    //databaseReference.push().setValue(keepHere); // only save data in Firebase if user respond
-//                    barLauncher.launch(options);
-//
-//                    // Toast message
-//                    //Toast.makeText(FittingRoom1.this, "Item saved", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-
-
-
         barLauncher.launch(options);
-
     }
 
     ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
         if(result.getContents() != null){
             AlertDialog.Builder builder = new AlertDialog.Builder(FittingRoom1.this); // alert box
             builder.setTitle("Result");
-            builder.setMessage(result.getContents()); // ?result.getContents() need to send to Firebase?
+            builder.setMessage(result.getContents());
             String barcodeNumber = result.getContents(); // SAVE BARCODE NUMBER
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     dialogInterface.dismiss();
-                    //addBarcodeToFirebase(barcodeNumber); // OLD METHOD
                     storeBarcode(barcodeNumber); // to store barcode number
 
                     // Only save the barcode if it is not under the same item
@@ -240,10 +262,52 @@ public class FittingRoom1 extends AppCompatActivity {
                                 Toast.makeText(FittingRoom1.this, "Item exists", Toast.LENGTH_SHORT).show();
 
                             } else {
-                                databaseReference.push().setValue(keepHere); // only save data in Firebase if user respond
+                                String currentItemNumber = fittingRoom1.getItemNumber();
+
+                                if(!Objects.equals(currentItemNumber, barcodeNumber)){
+                                    if(Objects.equals(currentItemNumber, "Item 1")){
+                                        item1Barcode.setText(barcodeNumber);
+                                        SharedPreferences.Editor editor1 = sharedPreferences.edit();
+                                        editor1.putString(KEY_ITEM1, barcodeNumber);
+                                        editor1.apply();
+                                    }
+                                    if(Objects.equals(currentItemNumber, "Item 2")){
+                                        item2Barcode.setText(barcodeNumber);
+                                        SharedPreferences.Editor editor2 = sharedPreferences.edit();
+                                        editor2.putString(KEY_ITEM2, barcodeNumber);
+                                        editor2.apply();
+                                    }
+                                    if(Objects.equals(currentItemNumber, "Item 3")){
+                                        item3Barcode.setText(barcodeNumber);
+                                        SharedPreferences.Editor editor3 = sharedPreferences.edit();
+                                        editor3.putString(KEY_ITEM3, barcodeNumber);
+                                        editor3.apply();
+                                    }
+                                    if(Objects.equals(currentItemNumber, "Item 4")){
+                                        item4Barcode.setText(barcodeNumber);
+                                        SharedPreferences.Editor editor4 = sharedPreferences.edit();
+                                        editor4.putString(KEY_ITEM4, barcodeNumber);
+                                        editor4.apply();
+                                    }
+                                    if(Objects.equals(currentItemNumber, "Item 5")){
+                                        item5Barcode.setText(barcodeNumber);
+                                        SharedPreferences.Editor editor5 = sharedPreferences.edit();
+                                        editor5.putString(KEY_ITEM5, barcodeNumber);
+                                        editor5.apply();
+                                    }
+                                    if(Objects.equals(currentItemNumber, "Item 6")){
+                                        item6Barcode.setText(barcodeNumber);
+                                        SharedPreferences.Editor editor6 = sharedPreferences.edit();
+                                        editor6.putString(KEY_ITEM6, barcodeNumber);
+                                        editor6.apply();
+                                    }
+                                }
+
+                                databaseReference.push().setValue(fittingRoom1); // only save data in Firebase if user respond
 
                                 // Toast message
                                 Toast.makeText(FittingRoom1.this, "Item saved", Toast.LENGTH_SHORT).show();
+
                             }
                         }
 
@@ -252,31 +316,24 @@ public class FittingRoom1 extends AppCompatActivity {
 
                         }
                     });
-
-                    //databaseReference.child(barcodeNumber);
-
-                    //databaseReference.push().setValue(keepHere); // only save data in Firebase if user respond
                 }
             }).show();
-
-
         }
     });
 
     private void openScanner(String fittingRoomNumber, String itemNumber, String date){
-         scanCode();                                        // open the scanner
-         keepHere.setFittingRoomNumber(fittingRoomNumber);  // to store fitting room number
-         keepHere.setItemNumber(itemNumber);                // to store item number
-         keepHere.setDate(date);
+        scanCode();                                            // open the scanner
+        fittingRoom1.setFittingRoomNumber(fittingRoomNumber);  // to store fitting room number
+        fittingRoom1.setItemNumber(itemNumber);                // to store item number
+        fittingRoom1.setDate(date);
 
-         FirebaseUser user = mAuth.getInstance().getCurrentUser();
-         keepHere.setUserEmail(user.getEmail());
+        FirebaseUser user = mAuth.getInstance().getCurrentUser();
+        fittingRoom1.setUserEmail(user.getEmail());
     }
 
     private void storeBarcode(String barcodeNumber){
-        keepHere.setBarcodeNumber(barcodeNumber);           // to store barcode number
+        fittingRoom1.setBarcodeNumber(barcodeNumber);           // to store barcode number
     }
-
 
     // Checkout
     private void scanCheckoutCode() {
@@ -298,7 +355,6 @@ public class FittingRoom1 extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     dialogInterface.dismiss();
-                    //storeCheckoutBarcode(barcodeNumber); // to store barcode number
 
                     // Only delete the barcode if it is available in the database
                     DatabaseReference barcodeReference = FirebaseDatabase.getInstance().getReference();
@@ -307,8 +363,79 @@ public class FittingRoom1 extends AppCompatActivity {
                     checkoutBarcode.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
-                                barcodeSnapshot.getRef().removeValue();
+                            if(snapshot.exists()){
+
+                                String currentItemNumber = fittingRoom1.getItemNumber();
+
+                                if(Objects.equals(currentItemNumber, "Item 1")){
+                                    item1Barcode.setText("NA");
+                                    SharedPreferences.Editor editor1 = sharedPreferences.edit();
+                                    editor1.putString(KEY_ITEM1, "NA");
+                                    editor1.apply();
+
+                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
+                                        barcodeSnapshot.getRef().removeValue();
+                                    }
+                                }
+                                if(Objects.equals(currentItemNumber, "Item 2")){
+                                    item2Barcode.setText("NA");
+                                    SharedPreferences.Editor editor2 = sharedPreferences.edit();
+                                    editor2.putString(KEY_ITEM2, "NA");
+                                    editor2.apply();
+
+                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
+                                        barcodeSnapshot.getRef().removeValue();
+                                    }
+                                }
+                                if(Objects.equals(currentItemNumber, "Item 3")){
+                                    item3Barcode.setText("NA");
+                                    SharedPreferences.Editor editor3 = sharedPreferences.edit();
+                                    editor3.putString(KEY_ITEM3, "NA");
+                                    editor3.apply();
+
+                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
+                                        barcodeSnapshot.getRef().removeValue();
+                                    }
+                                }
+                                if(Objects.equals(currentItemNumber, "Item 4")){
+                                    item4Barcode.setText("NA");
+                                    SharedPreferences.Editor editor4 = sharedPreferences.edit();
+                                    editor4.putString(KEY_ITEM4, "NA");
+                                    editor4.apply();
+
+                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
+                                        barcodeSnapshot.getRef().removeValue();
+                                    }
+                                }
+                                if(Objects.equals(currentItemNumber, "Item 5")){
+                                    item5Barcode.setText("NA");
+                                    SharedPreferences.Editor editor5 = sharedPreferences.edit();
+                                    editor5.putString(KEY_ITEM5, "NA");
+                                    editor5.apply();
+
+                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
+                                        barcodeSnapshot.getRef().removeValue();
+                                    }
+                                }
+                                if(Objects.equals(currentItemNumber, "Item 6")){
+                                    item6Barcode.setText("NA");
+                                    SharedPreferences.Editor editor6 = sharedPreferences.edit();
+                                    editor6.putString(KEY_ITEM6, "NA");
+                                    editor6.apply();
+
+                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
+                                        barcodeSnapshot.getRef().removeValue();
+                                    }
+                                }
+
+                            } else{
+                                Toast.makeText(FittingRoom1.this, "Suspected stolen items", Toast.LENGTH_SHORT).show();
+                                report.setBarcode(barcodeNumber);
+
+                                databaseReference = firebaseDatabase.getReference("Report");
+                                databaseReference.push().setValue(report);
+
+                                showPopupWindow();
                             }
                         }
 
@@ -317,106 +444,57 @@ public class FittingRoom1 extends AppCompatActivity {
 
                         }
                     });
-
-//                    barcodeReference.child("KeepHere").orderByChild("barcodeNumber").equalTo(barcodeNumber).addChildEventListener(new ChildEventListener() {
-//                        @Override
-//                        public void onChildAdded(@NonNull DataSnapshot snapshot, String previousChildName) {
-//                            barcodeReference.child("KeepHere").child(snapshot.getKey()).setValue(null);
-//                            //snapshot.getRef().setValue(null);
-//                        }
-//
-//                        @Override
-//                        public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError error) {
-//
-//                        }
-//                    });
-
                 }
             }).show();
-
-
         }
     });
 
-    private void openCheckoutScanner(String fittingRoomNumber, String itemNumber, String date){
-        scanCode();                                        // open the scanner
-        keepHere.setFittingRoomNumber(fittingRoomNumber);  // to store fitting room number
-        keepHere.setItemNumber(itemNumber);                // to store item number
-        keepHere.setDate(date);
-
-        FirebaseUser user = mAuth.getInstance().getCurrentUser();
-        keepHere.setUserEmail(user.getEmail());
+    private void saveSuspected(String fittingRoomNumber, String date){
+        scanCheckoutCode();                                        // open the scanner
+        report.setFittingRoom(fittingRoomNumber);                  // to store fitting room number
+        report.setDate(date);
     }
 
-    private void storeCheckoutBarcode(String barcodeNumber){
-        keepHere.setBarcodeNumber(barcodeNumber);           // to store barcode number
-    }
+    private void showPopupWindow(){
+        View view = View.inflate(this, R.layout.popup_layout, null);
+        Button close = view.findViewById(R.id.close);
+        TextView body = view.findViewById(R.id.popupMessage);
 
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
+        PopupWindow popupWindow = new PopupWindow(view, width, height, false);
 
+        popupWindow.showAtLocation(parent, Gravity.CENTER, 0, 0);
 
-    private void addDataToFirebase(String fittingRoomNumber, String itemNumber /*String barcodeNumber*/){
-        // Set data in the object class (KeepHere)
-        keepHere.setFittingRoomNumber(fittingRoomNumber);
-        keepHere.setItemNumber(itemNumber);
-        //keepHere.setBarcodeNumber(barcodeNumber);
+        close.setOnClickListener(v -> {
+            popupWindow.dismiss();
 
-        // Add value event listener method that is called with database reference
-        databaseReference.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // Setting the object class (KeepHere) to the Database Reference
-                // Database Reference will send the data to Firebase
-                //databaseReference.setValue(keepHere); //THIS IS THE ORIGINAL
-
-                // Toast message
-                Toast.makeText(FittingRoom1.this, "Item saved", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(FittingRoom1.this, "Failed", Toast.LENGTH_SHORT).show();
-            }
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:0125091285"));
+            startActivity(intent);
         });
     }
 
-    private void addBarcodeToFirebase(String barcodeNumber){
-        // Set data in the object class (KeepHere)
-        keepHere.setBarcodeNumber(barcodeNumber);
+    public void clearFittingRoom(){
+        DatabaseReference fittingRoom = FirebaseDatabase.getInstance().getReference("KeepHere1");
 
-        // Add value event listener method that is called with database reference
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // Setting the object class (KeepHere) to the Database Reference
-                // Database Reference will send the data to Firebase
-                databaseReference.setValue(keepHere); //THIS IS THE ORIGINAL
+        fittingRoom.removeValue();
 
-                // Toast message
-                Toast.makeText(FittingRoom1.this, "Item saved", Toast.LENGTH_SHORT).show();
-            }
+        item1Barcode.setText("NA");
+        item2Barcode.setText("NA");
+        item3Barcode.setText("NA");
+        item4Barcode.setText("NA");
+        item5Barcode.setText("NA");
+        item6Barcode.setText("NA");
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(FittingRoom1.this, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+        SharedPreferences.Editor editor1 = sharedPreferences.edit();
+        editor1.putString(KEY_ITEM1, "NA");
+        editor1.putString(KEY_ITEM2, "NA");
+        editor1.putString(KEY_ITEM3, "NA");
+        editor1.putString(KEY_ITEM4, "NA");
+        editor1.putString(KEY_ITEM5, "NA");
+        editor1.putString(KEY_ITEM6, "NA");
+        editor1.apply();
     }
-
 }
