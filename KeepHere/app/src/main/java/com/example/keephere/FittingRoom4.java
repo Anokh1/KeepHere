@@ -434,6 +434,8 @@ public class FittingRoom4 extends AppCompatActivity {
                                 databaseReference.push().setValue(report);
 
                                 showPopupWindow();
+
+                                databaseReference = firebaseDatabase.getReference("KeepHere4");
                             }
                         }
 
