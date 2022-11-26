@@ -7,19 +7,6 @@
     android:background="@drawable/cut_card_background"
     tools:context=".LoginRegisterActivity">
 
-<!--    <TextView-->
-<!--        android:id="@+id/textView"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Welcome, You are logged in "-->
-<!--        android:textSize="30sp"  -->
-<!--        android:textStyle="bold"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.5"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
     <TextView
         android:id="@+id/userName"
         android:layout_width="wrap_content"
@@ -253,7 +240,6 @@
 
     </GridLayout>
 
-
     <Button
         android:id="@+id/btnLogout"
         android:layout_width="wrap_content"
@@ -263,6 +249,7 @@
         android:layout_marginTop="45dp"
         android:layout_marginEnd="30dp"
         android:text="Logout"
+        android:backgroundTint="@color/clear_red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />

@@ -477,7 +477,7 @@ public class FittingRoom1 extends AppCompatActivity {
     }
 
     public void clearFittingRoom(){
-        DatabaseReference fittingRoom = FirebaseDatabase.getInstance().getReference("KeepHere1");
+        DatabaseReference fittingRoom = FirebaseDatabase.getInstance().getReference("KeepHere");
 
         fittingRoom.removeValue();
 
