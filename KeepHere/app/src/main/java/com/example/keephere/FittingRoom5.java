@@ -138,7 +138,7 @@ public class FittingRoom5 extends AppCompatActivity {
         item6Barcode.setText(itemNum6);
 
         fittingRoom5 = new KeepHere5();
-        report = new Report(); // POTENTIAL ERROR
+        report = new Report();
 
 
         btnCheckout = findViewById(R.id.btnCheckout);
@@ -375,7 +375,8 @@ public class FittingRoom5 extends AppCompatActivity {
                                         barcodeSnapshot.getRef().removeValue();
                                     }
                                 }
-                                if(Objects.equals(currentItemNumber, "Item 2")){
+
+                                else if(Objects.equals(currentItemNumber, "Item 2")){
                                     item2Barcode.setText("NA");
                                     SharedPreferences.Editor editor26 = sharedPreferences.edit();
                                     editor26.putString(KEY_ITEM26, "NA");
@@ -385,7 +386,8 @@ public class FittingRoom5 extends AppCompatActivity {
                                         barcodeSnapshot.getRef().removeValue();
                                     }
                                 }
-                                if(Objects.equals(currentItemNumber, "Item 3")){
+
+                                else if(Objects.equals(currentItemNumber, "Item 3")){
                                     item3Barcode.setText("NA");
                                     SharedPreferences.Editor editor27 = sharedPreferences.edit();
                                     editor27.putString(KEY_ITEM27, "NA");
@@ -395,6 +397,7 @@ public class FittingRoom5 extends AppCompatActivity {
                                         barcodeSnapshot.getRef().removeValue();
                                     }
                                 }
+
                                 if(Objects.equals(currentItemNumber, "Item 4")){
                                     item4Barcode.setText("NA");
                                     SharedPreferences.Editor editor28 = sharedPreferences.edit();
@@ -405,7 +408,8 @@ public class FittingRoom5 extends AppCompatActivity {
                                         barcodeSnapshot.getRef().removeValue();
                                     }
                                 }
-                                if(Objects.equals(currentItemNumber, "Item 5")){
+
+                                else if(Objects.equals(currentItemNumber, "Item 5")){
                                     item5Barcode.setText("NA");
                                     SharedPreferences.Editor editor29 = sharedPreferences.edit();
                                     editor29.putString(KEY_ITEM29, "NA");
@@ -415,7 +419,8 @@ public class FittingRoom5 extends AppCompatActivity {
                                         barcodeSnapshot.getRef().removeValue();
                                     }
                                 }
-                                if(Objects.equals(currentItemNumber, "Item 6")){
+
+                                else if(Objects.equals(currentItemNumber, "Item 6")){
                                     item6Barcode.setText("NA");
                                     SharedPreferences.Editor editor30 = sharedPreferences.edit();
                                     editor30.putString(KEY_ITEM30, "NA");
