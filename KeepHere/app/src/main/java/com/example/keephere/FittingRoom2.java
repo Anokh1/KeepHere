@@ -1,5 +1,6 @@
 package com.example.keephere;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -345,7 +346,7 @@ public class FittingRoom2 extends AppCompatActivity {
     ActivityResultLauncher<ScanOptions> checkoutBarLauncher = registerForActivityResult(new ScanContract(), result -> {
         if(result.getContents() != null){
             AlertDialog.Builder builder = new AlertDialog.Builder(FittingRoom2.this); // alert box
-            builder.setTitle("Result");
+            builder.setTitle("Checkout result");
             builder.setMessage(result.getContents()); // ?result.getContents() need to send to Firebase?
             String barcodeNumber = result.getContents(); // SAVE BARCODE NUMBER
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -358,72 +359,82 @@ public class FittingRoom2 extends AppCompatActivity {
                     Query checkoutBarcode = barcodeReference.child("KeepHere2").orderByChild("barcodeNumber").equalTo(barcodeNumber);
 
                     checkoutBarcode.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @SuppressLint("SetTextI18n")
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if(snapshot.exists()){
 
-                                String currentItemNumber = fittingRoom2.getItemNumber();
+                                for (DataSnapshot itemNumberSnapshot : snapshot.getChildren()){
+                                    String currentItemNumber = itemNumberSnapshot.child("itemNumber").getValue().toString();
 
-                                if(Objects.equals(currentItemNumber, "Item 1")){
-                                    item1Barcode.setText("NA");
-                                    SharedPreferences.Editor editor7 = sharedPreferences.edit();
-                                    editor7.putString(KEY_ITEM7, "NA");
-                                    editor7.apply();
+                                    if(Objects.equals(currentItemNumber, "Item 1")){
+                                        item1Barcode.setText("NA");
+                                        SharedPreferences.Editor editor7 = sharedPreferences.edit();
+                                        editor7.putString(KEY_ITEM7, "NA");
+                                        editor7.apply();
 
-                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
-                                        barcodeSnapshot.getRef().removeValue();
+                                        for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
+                                            barcodeSnapshot.getRef().removeValue();
+                                        }
+                                        Toast.makeText(FittingRoom2.this, currentItemNumber, Toast.LENGTH_SHORT).show();
+                                    }
+                                    if(Objects.equals(currentItemNumber, "Item 2")){
+                                        item2Barcode.setText("NA");
+                                        SharedPreferences.Editor editor8 = sharedPreferences.edit();
+                                        editor8.putString(KEY_ITEM8, "NA");
+                                        editor8.apply();
+
+                                        for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
+                                            barcodeSnapshot.getRef().removeValue();
+                                        }
+                                        Toast.makeText(FittingRoom2.this, currentItemNumber, Toast.LENGTH_SHORT).show();
+                                    }
+                                    if(Objects.equals(currentItemNumber, "Item 3")){
+                                        item3Barcode.setText("NA");
+                                        SharedPreferences.Editor editor9 = sharedPreferences.edit();
+                                        editor9.putString(KEY_ITEM9, "NA");
+                                        editor9.apply();
+
+                                        for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
+                                            barcodeSnapshot.getRef().removeValue();
+                                        }
+                                        Toast.makeText(FittingRoom2.this, currentItemNumber, Toast.LENGTH_SHORT).show();
+                                    }
+                                    if(Objects.equals(currentItemNumber, "Item 4")){
+                                        item4Barcode.setText("NA");
+                                        SharedPreferences.Editor editor10 = sharedPreferences.edit();
+                                        editor10.putString(KEY_ITEM10, "NA");
+                                        editor10.apply();
+
+                                        for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
+                                            barcodeSnapshot.getRef().removeValue();
+                                        }
+                                        Toast.makeText(FittingRoom2.this, currentItemNumber, Toast.LENGTH_SHORT).show();
+                                    }
+                                    if(Objects.equals(currentItemNumber, "Item 5")){
+                                        item5Barcode.setText("NA");
+                                        SharedPreferences.Editor editor11 = sharedPreferences.edit();
+                                        editor11.putString(KEY_ITEM11, "NA");
+                                        editor11.apply();
+
+                                        for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
+                                            barcodeSnapshot.getRef().removeValue();
+                                        }
+                                        Toast.makeText(FittingRoom2.this, currentItemNumber, Toast.LENGTH_SHORT).show();
+                                    }
+                                    if(Objects.equals(currentItemNumber, "Item 6")){
+                                        item6Barcode.setText("NA");
+                                        SharedPreferences.Editor editor12 = sharedPreferences.edit();
+                                        editor12.putString(KEY_ITEM12, "NA");
+                                        editor12.apply();
+
+                                        for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
+                                            barcodeSnapshot.getRef().removeValue();
+                                        }
+                                        Toast.makeText(FittingRoom2.this, currentItemNumber, Toast.LENGTH_SHORT).show();
                                     }
                                 }
-                                if(Objects.equals(currentItemNumber, "Item 2")){
-                                    item2Barcode.setText("NA");
-                                    SharedPreferences.Editor editor8 = sharedPreferences.edit();
-                                    editor8.putString(KEY_ITEM8, "NA");
-                                    editor8.apply();
 
-                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
-                                        barcodeSnapshot.getRef().removeValue();
-                                    }
-                                }
-                                if(Objects.equals(currentItemNumber, "Item 3")){
-                                    item3Barcode.setText("NA");
-                                    SharedPreferences.Editor editor9 = sharedPreferences.edit();
-                                    editor9.putString(KEY_ITEM9, "NA");
-                                    editor9.apply();
-
-                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
-                                        barcodeSnapshot.getRef().removeValue();
-                                    }
-                                }
-                                if(Objects.equals(currentItemNumber, "Item 4")){
-                                    item4Barcode.setText("NA");
-                                    SharedPreferences.Editor editor10 = sharedPreferences.edit();
-                                    editor10.putString(KEY_ITEM10, "NA");
-                                    editor10.apply();
-
-                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
-                                        barcodeSnapshot.getRef().removeValue();
-                                    }
-                                }
-                                if(Objects.equals(currentItemNumber, "Item 5")){
-                                    item5Barcode.setText("NA");
-                                    SharedPreferences.Editor editor11 = sharedPreferences.edit();
-                                    editor11.putString(KEY_ITEM11, "NA");
-                                    editor11.apply();
-
-                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
-                                        barcodeSnapshot.getRef().removeValue();
-                                    }
-                                }
-                                if(Objects.equals(currentItemNumber, "Item 6")){
-                                    item6Barcode.setText("NA");
-                                    SharedPreferences.Editor editor12 = sharedPreferences.edit();
-                                    editor12.putString(KEY_ITEM12, "NA");
-                                    editor12.apply();
-
-                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
-                                        barcodeSnapshot.getRef().removeValue();
-                                    }
-                                }
 
                             } else{
                                 Toast.makeText(FittingRoom2.this, "Suspected stolen items", Toast.LENGTH_SHORT).show();
@@ -475,6 +486,7 @@ public class FittingRoom2 extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("SetTextI18n")
     public void clearFittingRoom(){
         DatabaseReference fittingRoom = FirebaseDatabase.getInstance().getReference("KeepHere2");
 

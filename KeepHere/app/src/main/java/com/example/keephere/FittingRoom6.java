@@ -358,17 +358,11 @@ public class FittingRoom6 extends AppCompatActivity {
                     DatabaseReference barcodeReference = FirebaseDatabase.getInstance().getReference();
                     Query checkoutBarcode = barcodeReference.child("KeepHere6").orderByChild("barcodeNumber").equalTo(barcodeNumber);
 
-                    //String realItemNumber = "Item 1";
-
                     checkoutBarcode.addListenerForSingleValueEvent(new ValueEventListener() {
                         @SuppressLint("SetTextI18n")
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if(snapshot.exists()){
-
-                                //String currentItemNumber = fittingRoom6.getItemNumber();
-                                //String currentItemNumber = realItemNumber; // new but useless
-                                //Toast.makeText(FittingRoom6.this, currentItemNumber, Toast.LENGTH_LONG).show();
 
                                 for (DataSnapshot itemNumberSnapshot : snapshot.getChildren()){
                                     String currentItemNumber = itemNumberSnapshot.child("itemNumber").getValue().toString();
@@ -447,81 +441,6 @@ public class FittingRoom6 extends AppCompatActivity {
                                     }
                                 }
 
-                                // could not get the current item Number...
-
-
-//                                if(Objects.equals(currentItemNumber, "Item 1")){
-//                                    item1Barcode.setText("NA");
-//                                    SharedPreferences.Editor editor31 = sharedPreferences.edit();
-//                                    editor31.putString(KEY_ITEM31, "NA");
-//                                    editor31.apply();
-//
-//                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
-//                                        barcodeSnapshot.getRef().removeValue();
-//                                    }
-//
-//                                    Toast.makeText(FittingRoom6.this, currentItemNumber, Toast.LENGTH_SHORT).show();
-//                                }
-//                                if(Objects.equals(currentItemNumber, "Item 2")){
-//                                    item2Barcode.setText("NA");
-//                                    SharedPreferences.Editor editor32 = sharedPreferences.edit();
-//                                    editor32.putString(KEY_ITEM32, "NA");
-//                                    editor32.apply();
-//
-//                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
-//                                        barcodeSnapshot.getRef().removeValue();
-//                                    }
-//                                    Toast.makeText(FittingRoom6.this, currentItemNumber, Toast.LENGTH_SHORT).show();
-//
-//                                }
-//                                if(Objects.equals(currentItemNumber, "Item 3")){
-//                                    item3Barcode.setText("NA");
-//                                    SharedPreferences.Editor editor33 = sharedPreferences.edit();
-//                                    editor33.putString(KEY_ITEM33, "NA");
-//                                    editor33.apply();
-//
-//                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
-//                                        barcodeSnapshot.getRef().removeValue();
-//                                    }
-//                                    Toast.makeText(FittingRoom6.this, currentItemNumber, Toast.LENGTH_SHORT).show();
-//
-//                                }
-//                                if(Objects.equals(currentItemNumber, "Item 4")){
-//                                    item4Barcode.setText("NA");
-//                                    SharedPreferences.Editor editor34 = sharedPreferences.edit();
-//                                    editor34.putString(KEY_ITEM34, "NA");
-//                                    editor34.apply();
-//
-//                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
-//                                        barcodeSnapshot.getRef().removeValue();
-//                                    }
-//                                    Toast.makeText(FittingRoom6.this, currentItemNumber, Toast.LENGTH_SHORT).show();
-//
-//                                }
-//                                if(Objects.equals(currentItemNumber, "Item 5")){
-//                                    item5Barcode.setText("NA");
-//                                    SharedPreferences.Editor editor35 = sharedPreferences.edit();
-//                                    editor35.putString(KEY_ITEM35, "NA");
-//                                    editor35.apply();
-//
-//                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
-//                                        barcodeSnapshot.getRef().removeValue();
-//                                    }
-//                                    Toast.makeText(FittingRoom6.this, currentItemNumber, Toast.LENGTH_SHORT).show();
-//
-//                                }
-//                                if(Objects.equals(currentItemNumber, "Item 6")){
-//                                    item6Barcode.setText("NA");
-//                                    SharedPreferences.Editor editor36 = sharedPreferences.edit();
-//                                    editor36.putString(KEY_ITEM36, "NA");
-//                                    editor36.apply();
-//
-//                                    for (DataSnapshot barcodeSnapshot: snapshot.getChildren()) {
-//                                        barcodeSnapshot.getRef().removeValue();
-//                                    }
-//                                    Toast.makeText(FittingRoom6.this, currentItemNumber, Toast.LENGTH_SHORT).show();
-//
-//                                }
 
                             } else{
                                 Toast.makeText(FittingRoom6.this, "Suspected stolen items", Toast.LENGTH_SHORT).show();
